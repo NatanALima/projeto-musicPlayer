@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap');
+
+:root {
+    --colorPrim: #0F0231;
+    --colorContent: #9764D8;
+    --colorContainer: #0B001C;
+    --fontPrim: 'Roboto', sans-serif;
+    --borderRadius: 12px;
+    --degradeBar: linear-gradient(to left, #9764d8, #9e69e2, #a56eeb, #ad74f5, #b479ff);
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+    background-color: var(--colorPrim);
+    font-family: var(--fontPrim);
+    color: var(--colorContent);
+}
+
+main.playerBox__container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    padding: 0 20px;
+    background-color: var(--colorContainer);
+    border-radius: var(--borderRadius);
+
+}
+
+
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Estilização da capa da música
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+
+main.playerBox__container .playerBox__album {
+    margin-top: -40%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.playerBox__album img.album__image {
+    width: 300px;
+    height: 300px;
+    user-select: none;
+}
+
+
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Estilização das informações escritas da música
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+
+.playerBox__musicInfo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.playerBox__musicInfo h1 {
+    color: white;
+    font-size: 32px;
+
+}
+
+.playerBox__musicInfo p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.playerBox__musicStatus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Estilização do Status da Música
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+
+.playerBox__musicStatus span.timer {
+    font-weight: bold;
+    color: white;
+    font-size: 18px;
+}
+
+.playerBox__musicStatus input[type=range] {
+    /*
+    Remove a aparência da barra do range
+    -> Permite a estilização da mesma
+    */
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: var(--degradeBar);
+    border-radius: var(--borderRadius);
+    width: 100%;
+    height: 4px;
+    color: var(--colorContent);
+    margin: 0 15px;
+    cursor: pointer;
+}
+
+/*Estilização do Button do Range*/
+.playerBox__musicStatus input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+
+}
+
+
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Estilização dos botões de ação
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+
+.playerBox__btnCollection {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin: 20px 0;
+    
+}
+
+.playerBox__btnCollection button {
+    margin: 0 10px;
+    width: 50px; height: 50px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: transparent;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.playerBox__btnCollection button#pausePlayBtn {
+    background-color: var(--colorContent);
+    width: 70px; height: 70px;
+    font-size: 30px;
+
+}
+
+.playerBox__btnCollection button:not(#pausePlayBtn):hover {
+    color: var(--colorContent);
+}
+
+.playerBox__btnCollection button#pausePlayBtn:hover {
+    background-color: white;
+    color: var(--colorContent);
+
+}
+
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Estilização do Volume
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+.playerBox__volume {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin: 20px 0;
+
+}
+
+.playerBox__volume .volume__icon {
+    margin-right: 10px;
+
+}
+
+.playerBox__volume input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20%;
+    height: 4px;
+    background: var(--degradeBar);
+    border-radius: var(--borderRadius);
+    cursor: pointer;
+}
+
+.playerBox__volume input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+}
+
+
+
+
+
+

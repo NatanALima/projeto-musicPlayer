@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <main class="playerBox__container">
+        <section class="playerBox__album">
+            <img src="./assets/media/img/album_mutantes_capa1.jpg" alt="mutantes_capa" class="album__image">
+        </section>
+        <section class="playerBox__musicInfo">
+            <h1>Dom Quixote</h1>
+            <p>Os mutantes</p>
+        </section>
+        <section class="playerBox__musicStatus">
+            <span id="currentTimer" class="timer">0:00</span>
+            <input type="range" min="0" max="100" name="progressBar" id="progressBar">
+            <span id="totalTimer" class="timer">3:23</span>
+        </section>
+        <section class="playerBox__btnCollection">
+            <button id="backBtn"><i class="fa-solid fa-backward-step"></i></button>
+            <button id="pausePlayBtn"><i class="fa-solid fa-play"></i></button>
+            <button id="nextBtn"><i class="fa-solid fa-forward-step"></i></button>
+        </section>
+        <section class="playerBox__volume">
+            <span class="volume__icon"><i class="fa-solid fa-volume-high"></i></span>
+            <span style="display: none;">
+                <i class="fa-solid fa-volume-low"></i>
+                <i class="fa-solid fa-volume-xmark"></i>
+            </span>
+            <input type="range" min="0" max="100" name="musicVol" id="musicVol">
+        </section>
+        
+    </main>
+</body>
+</html>
