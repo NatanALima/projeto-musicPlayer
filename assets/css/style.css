@@ -21,7 +21,7 @@ body {
 
 main.playerBox__container {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
@@ -44,13 +44,23 @@ main.playerBox__container .playerBox__album {
     margin-top: -40%;
     display: flex;
     justify-content: center;
+    position: relative;
 
 }
 
-.playerBox__album img.album__image {
+.playerBox__album img {
     width: 300px;
     height: 300px;
     user-select: none;
+}
+
+.playerBox__album img.album__vinil {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: -30%;
+    z-index: -1;
+    filter: drop-shadow(0px 0px 12px #7a1bf713);
 }
 
 
@@ -118,6 +128,7 @@ Estilização do Status da Música
 
 /*Estilização do Button do Range*/
 .playerBox__musicStatus input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
     width: 16px;
     height: 16px;
