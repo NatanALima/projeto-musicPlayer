@@ -117,13 +117,14 @@ Estilização do Status da Música
     */
     -webkit-appearance: none;
     appearance: none;
-    background-image: var(--degradeBar);
+    background-image: linear-gradient(to right, var(--colorContent) var(--progress), white 0%);
     border-radius: var(--borderRadius);
     width: 100%;
     height: 4px;
     color: var(--colorContent);
     margin: 0 15px;
     cursor: pointer;
+    transition: .3s ease;
 }
 
 /*Estilização do Button do Range*/
