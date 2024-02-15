@@ -35,11 +35,11 @@
             <button id="nextBtn"><i class="fa-solid fa-forward-step"></i></button>
         </section>
         <section class="playerBox__volume">
-            <span class="volume__icon"><i class="fa-solid fa-volume-high"></i></span>
-            <span style="display: none;">
-                <i class="fa-solid fa-volume-low"></i>
-                <i class="fa-solid fa-volume-xmark"></i>
-            </span>
+            <button class="volume__icon" id="volumeBtn" data-volstatus="high">
+                <i class="fa-solid fa-volume-high" id="highIcon"></i>
+                <i class="fa-solid fa-volume-low" id="midIcon"></i>
+                <i class="fa-solid fa-volume-xmark" id="mutedIcon"></i>
+            </button>
             <input type="range" min="0" max="100" name="musicVol" id="musicVol">
         </section>
         

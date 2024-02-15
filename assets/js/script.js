@@ -1,4 +1,4 @@
-
+// Informações para a manipulação do Audio
 const audioLocation = "./assets/media/audio";
 const audioPlayer = document.getElementById('audioPlayer');
 
@@ -8,10 +8,15 @@ const musicTotalTimerView = document.getElementById('totalTimer');
 const progressBar = document.getElementById('progressBar');
 var musicCurrTime;
 
+//Volume
+const inputVolume = document.getElementById('musicVol');
+let lastVolStatus, lastVolValue;
+
 //Botões
 const pausePlayBtn = document.getElementById('pausePlayBtn');
 const backMusicBtn = document.getElementById('backBtn');
 const nextMusicBtn = document.getElementById('nextBtn');
+const volumeBtn = document.getElementById('volumeBtn');
 
 //Icones
 const playIcon = document.getElementById('playIcon');
@@ -51,8 +56,14 @@ const musicList = [
 ]
 
 
-
-// Funções de auxilio
+/* 
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Funções de Auxílio
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+// Funções de auxílio referentes ao Player
 const timerConverter = (timer) => {
     const minutes = Math.trunc(timer/60);
     const seconds = ("0" + Math.round(timer % 60)).slice(-2);
@@ -118,7 +129,41 @@ const setMusic = async (musicPlayer) => {
     }
 }
 
-//Funções Principais
+//Funções de auxílio referentes ao Volume
+const setVolume = (newValue) => {
+    inputVolume.value = newValue;
+    let volumeCalc = Number(newValue/100);
+    audioPlayer.volume = volumeCalc;
+    inputVolume.style = `--volumeBar: ${inputVolume.value}%`;
+}
+
+const changeIconVolume = (volume) => {
+    if(volume > inputVolume.max/2) {
+        volumeBtn.dataset.volstatus = "high";
+    
+    } else if(volume > 0) {
+        volumeBtn.dataset.volstatus = "mid";
+
+    } else {
+        volumeBtn.dataset.volstatus = "muted";
+
+    }
+}
+/*
+==============================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Funções Principais
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+==============================================
+*/
+
+
+/* 
+==============================
+Funções Destinadas a música 
+==============================
+*/
+//Inicia a música
 pausePlayBtn.addEventListener('click', () => {
     if(audioPlayer.paused) {  
         setMusic(audioPlayer);
@@ -131,6 +176,7 @@ pausePlayBtn.addEventListener('click', () => {
 
 })
 
+//Inicia a contagem
 audioPlayer.addEventListener('playing', () => {
     musicCurrTime = setInterval(() => {
         setCurrTimer(audioPlayer.currentTime);
@@ -142,5 +188,39 @@ audioPlayer.addEventListener('playing', () => {
 audioPlayer.addEventListener('ended', () => {
     audioPlayer.src = `${audioLocation}/eclipse_do_cometa.mp4`;
     setMusic(audioPlayer);
+})
+
+
+
+/* 
+==============================
+Funções Destinadas ao Volume
+==============================
+*/
+//Define o status inicial do volume;
+setVolume(inputVolume.value);
+changeIconVolume(inputVolume.value);
+
+// Permite a alteração do volume
+inputVolume.addEventListener('input', () => {
+    setVolume(inputVolume.value);
+    changeIconVolume(inputVolume.value);
+})
+
+// Muta e desmuta
+volumeBtn.addEventListener('click', () => {
+
+    if(volumeBtn.dataset.volstatus === "high" || volumeBtn.dataset.volstatus === "mid") {
+        lastVolStatus = volumeBtn.dataset.volstatus;
+        lastVolValue = inputVolume.value;
+        volumeBtn.dataset.volstatus = "muted";
+        setVolume(0);
+
+    } else {
+        volumeBtn.dataset.volstatus = lastVolStatus;
+        setVolume(lastVolValue);
+
+    }
+
 })
 

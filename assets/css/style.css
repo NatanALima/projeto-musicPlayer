@@ -203,7 +203,29 @@ Estilização do Volume
 }
 
 .playerBox__volume .volume__icon {
+    color: var(--colorContent);
+    font-size: 16px;
+    border: none;
+    background: transparent;
     margin-right: 10px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.playerBox__volume .volume__icon:hover {
+    opacity: 0.85;
+}
+
+
+/* Estilização dos níveis de volume */
+.volume__icon:is([data-volstatus="high"], [data-volstatus="mid"], [data-volstatus="muted"]) :is(#highIcon, #midIcon, #mutedIcon) {
+    display: none;
+
+} 
+.volume__icon[data-volstatus="high"] #highIcon,
+.volume__icon[data-volstatus="mid"] #midIcon,
+.volume__icon[data-volstatus="muted"] #mutedIcon {
+    display: block;
 
 }
 
@@ -212,7 +234,7 @@ Estilização do Volume
     appearance: none;
     width: 20%;
     height: 4px;
-    background: var(--degradeBar);
+    background-image: linear-gradient(to right, var(--colorContent) var(--volumeBar), white 0%);
     border-radius: var(--borderRadius);
     cursor: pointer;
 }
