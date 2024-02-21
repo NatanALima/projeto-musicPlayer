@@ -6,7 +6,7 @@ const audioPlayer = document.getElementById('audioPlayer');
 const musicCurrTimerView = document.getElementById('currentTimer');
 const musicTotalTimerView = document.getElementById('totalTimer');
 const progressBar = document.getElementById('progressBar');
-var musicCurrTime;
+let musicCurrTime;
 
 //Volume
 const inputVolume = document.getElementById('musicVol');
@@ -36,7 +36,7 @@ const musicList = [
         id: 2,
         nome: "Não Vá Se Perder Por Aí", 
         artista: "Os mutantes", 
-        arquivo: "eclipse_do_cometa.mp4", 
+        arquivo: "nao_va_se_perder_por_ai.mp4", 
         capa: "album_mutantes_capa1.jpg"
     },
     {
@@ -50,7 +50,7 @@ const musicList = [
         id: 4,
         nome: "Eclipse Do Cometa", 
         artista: "Rita Lee", 
-        arquivo: "eclipe_do_cometa.mp4", 
+        arquivo: "eclipse_do_cometa.mp4", 
         capa: "album_ritalee_capa1.jpg"
     }
 ]
@@ -71,11 +71,16 @@ const timerConverter = (timer) => {
 
 }
 
-const setCurrTimer = (timerCurr) => {
+const setProgressBarValue = (timerCurr) => {
     let progressCalc = (timerCurr * 100) / progressBar.max;
+    progressBar.style = `--progress: ${progressCalc}%`;
+    console.log(progressBar.max);
+}
+
+const setCurrTimer = (timerCurr) => {
 
     if(timerCurr <= progressBar.max) {
-        progressBar.style = `--progress: ${progressCalc}%`;
+        setProgressBarValue(timerCurr);
         progressBar.value = timerCurr;
         musicCurrTimerView.innerHTML = timerConverter(timerCurr);
 
@@ -115,7 +120,7 @@ const selectMusic = (musicId) => {
 const setMusic = async (musicPlayer) => {
     try {
         if(!musicPlayer.src) {
-            const music = selectMusic(1);
+            const music = selectMusic(2);
             musicPlayer.src = `${audioLocation}/${music.arquivo}`;
             
         }
@@ -170,6 +175,7 @@ pausePlayBtn.addEventListener('click', () => {
 
     } else {
         audioPlayer.pause();
+        clearInterval(musicCurrTime);
 
     }
     changeBtn();
@@ -178,6 +184,8 @@ pausePlayBtn.addEventListener('click', () => {
 
 //Inicia a contagem
 audioPlayer.addEventListener('playing', () => {
+    //A função é executada antes para impedir o delay inicial do setInterval 
+    setCurrTimer(audioPlayer.currentTime);
     musicCurrTime = setInterval(() => {
         setCurrTimer(audioPlayer.currentTime);
     }, 1000)
@@ -191,15 +199,29 @@ audioPlayer.addEventListener('ended', () => {
 })
 
 
+//Altera o tempo da música
+
+//Permite o usuário visualizar a partir de qual momento a música continuará
+progressBar.addEventListener('input', () => {
+    clearInterval(musicCurrTime);
+    setProgressBarValue(progressBar.value);
+    musicCurrTimerView.innerHTML = timerConverter(progressBar.value);
+})
+
+//Altera efetivamente o tempo da musica
+progressBar.addEventListener('change', () => {
+    setCurrTimer(progressBar.value);
+    audioPlayer.currentTime = progressBar.value;
+
+})
+
+
 
 /* 
 ==============================
 Funções Destinadas ao Volume
 ==============================
 */
-//Define o status inicial do volume;
-setVolume(inputVolume.value);
-changeIconVolume(inputVolume.value);
 
 // Permite a alteração do volume
 inputVolume.addEventListener('input', () => {
@@ -223,4 +245,22 @@ volumeBtn.addEventListener('click', () => {
     }
 
 })
+
+
+/* 
+==============================
+Função Principal 
+==============================
+*/
+const main = () => {
+    //Define o status inicial do volume;
+    setVolume(inputVolume.value);
+    changeIconVolume(inputVolume.value);
+
+    //Essas ações serão temporárias e somente permanecerão aqui até que novas features sejam adicionadas
+    // setMusic(audioPlayer);
+    // changeBtn();
+}
+
+main();
 
