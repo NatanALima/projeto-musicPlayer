@@ -3,10 +3,15 @@ const audioLocation = "./assets/media/audio";
 const audioPlayer = document.getElementById('audioPlayer');
 
 //Informações de música
+const musicCapaLocation = "./assets/media/img/capa";
 const musicCurrTimerView = document.getElementById('currentTimer');
 const musicTotalTimerView = document.getElementById('totalTimer');
 const progressBar = document.getElementById('progressBar');
 let musicCurrTime;
+
+const musicCapaView = document.getElementById('musicAlbum');
+const musicTitleView = document.getElementById('musicTitle');
+const musicArtistView = document.getElementById('musicArtist');
 
 //Volume
 const inputVolume = document.getElementById('musicVol');
@@ -14,7 +19,7 @@ let lastVolStatus, lastVolValue;
 
 //Botões
 const pausePlayBtn = document.getElementById('pausePlayBtn');
-const backMusicBtn = document.getElementById('backBtn');
+const prevMusicBtn = document.getElementById('backBtn');
 const nextMusicBtn = document.getElementById('nextBtn');
 const volumeBtn = document.getElementById('volumeBtn');
 
@@ -74,7 +79,7 @@ const timerConverter = (timer) => {
 const setProgressBarValue = (timerCurr) => {
     let progressCalc = (timerCurr * 100) / progressBar.max;
     progressBar.style = `--progress: ${progressCalc}%`;
-    console.log(progressBar.max);
+
 }
 
 const setCurrTimer = (timerCurr) => {
@@ -104,26 +109,12 @@ const changeBtn = () => {
 
 
 const selectMusic = (musicId) => {
-    let music;
-    if(musicId === musicList.length) {
-        music = musicList.filter(item => item.id === 1);
-    
-    } else if(musicId < 1) {
-        music = musicList.filter(item => item.id === musicList.length);
-
-    }
-    music = musicList.filter(item => item.id === musicId)[0];
-    return music;
+    return musicList.filter(item => item.id === musicId)[0];
 
 }
 
 const setMusic = async (musicPlayer) => {
     try {
-        if(!musicPlayer.src) {
-            const music = selectMusic(2);
-            musicPlayer.src = `${audioLocation}/${music.arquivo}`;
-            
-        }
         await musicPlayer.play();
         progressBar.max = musicPlayer.duration;
         musicTotalTimerView.innerHTML = timerConverter(musicPlayer.duration);
@@ -133,6 +124,49 @@ const setMusic = async (musicPlayer) => {
         console.log(err);
     }
 }
+
+const setMusicInfo = (musicPlayer) => {
+    //Pegando as informações da Música
+    const musicId = Number(musicPlayer.dataset.music);
+    const musicInfo = selectMusic(musicId);
+
+    //Atribuindo às variáveis as respectivas informações da música;
+    const nameMusic = musicInfo.nome;
+    const artMusic = musicInfo.artista;
+    const capaMusic = musicInfo.capa;
+    const fileMusic = musicInfo.arquivo;
+
+    //Definindo os caminhos para o audio e para a capa da música;
+    const srcMusic = `${audioLocation}/${fileMusic}`;
+    const srcCapa = `${musicCapaLocation}/${capaMusic}`;
+
+    musicCapaView.src = srcCapa;
+    musicTitleView.innerHTML = nameMusic;
+    musicArtistView.innerHTML = artMusic;
+    musicPlayer.src = srcMusic;
+
+
+}
+
+const setCurrMusic = (musicPlayer, direction = null) => {
+    const musicId = Number(musicPlayer.dataset.music);
+    if(!musicId || (musicId >= musicList.length && direction === "next")) {
+        musicPlayer.dataset.music = Number(1);
+        
+    } else if(musicId <= 1 && direction === "prev") {
+        musicPlayer.dataset.music = musicList.length;
+
+    } else if(musicId > 1 && direction === "prev") {
+        musicPlayer.dataset.music--;
+
+    } else {
+        musicPlayer.dataset.music++;
+
+    }
+
+
+}
+
 
 //Funções de auxílio referentes ao Volume
 const setVolume = (newValue) => {
@@ -182,6 +216,23 @@ pausePlayBtn.addEventListener('click', () => {
 
 })
 
+prevMusicBtn.addEventListener('click', () => {
+    if(audioPlayer.currentTime < 1) {
+        setCurrMusic(audioPlayer, "prev");
+        setMusicInfo(audioPlayer);
+        setMusic(audioPlayer);
+
+    } else {
+        audioPlayer.currentTime = 0;
+    }
+})
+
+nextMusicBtn.addEventListener('click', () => {
+    setCurrMusic(audioPlayer, "next");
+    setMusicInfo(audioPlayer);
+    setMusic(audioPlayer);
+})
+
 //Inicia a contagem
 audioPlayer.addEventListener('playing', () => {
     //A função é executada antes para impedir o delay inicial do setInterval 
@@ -192,9 +243,9 @@ audioPlayer.addEventListener('playing', () => {
 
 })
 
-//PENDENTE
 audioPlayer.addEventListener('ended', () => {
-    audioPlayer.src = `${audioLocation}/eclipse_do_cometa.mp4`;
+    setCurrMusic(audioPlayer, "next");
+    setMusicInfo(audioPlayer);
     setMusic(audioPlayer);
 })
 
@@ -257,9 +308,10 @@ const main = () => {
     setVolume(inputVolume.value);
     changeIconVolume(inputVolume.value);
 
-    //Essas ações serão temporárias e somente permanecerão aqui até que novas features sejam adicionadas
-    // setMusic(audioPlayer);
-    // changeBtn();
+    //Definições gerais da música
+    setCurrMusic(audioPlayer);
+    setMusicInfo(audioPlayer);
+
 }
 
 main();
